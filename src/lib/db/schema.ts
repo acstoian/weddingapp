@@ -7,9 +7,9 @@ import {
   jsonb,
 } from "drizzle-orm/pg-core";
 
-// TODO (01-03): Replace with Zod-inferred type from lib/templates/schema
-// When 01-03 creates InvitationFields, import it and replace this type.
-export type InvitationFields = Record<string, unknown>;
+// InvitationFields is the locked JSON contract shared by all templates.
+// Defined in lib/templates/schema.ts and imported here (01-03).
+export type { InvitationFields } from "@/lib/templates/schema";
 
 export const invitationStatusEnum = pgEnum("invitation_status", [
   "DRAFT",
