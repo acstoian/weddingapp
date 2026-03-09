@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "newInvitation": "New invitation",
+    "pricing": "Pricing"
+  },
+  "dashboard": {
+    "title": "My Invitations",
+    "empty": "Create your first invitation"
+  }
+}

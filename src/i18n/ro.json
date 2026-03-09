@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "newInvitation": "Invitatie noua",
+    "pricing": "Preturi"
+  },
+  "dashboard": {
+    "title": "Invitatiile mele",
+    "empty": "Creeaza prima ta invitatie"
+  }
+}
