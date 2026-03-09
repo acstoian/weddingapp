@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-03-09T05:54:29.599Z"
+stopped_at: Completed 01-free-tier-mvp plan 01 (scaffold)
+last_updated: "2026-03-09T17:30:32.059Z"
 last_activity: 2026-03-09 — Roadmap created; research complete; WABA application not yet started
 progress:
   total_phases: 5
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 7
+  completed_plans: 1
   percent: 0
 ---
 
@@ -50,6 +50,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-free-tier-mvp P01 | 45 | 3 tasks | 32 files |
 
 ## Accumulated Context
 
@@ -63,6 +64,7 @@ Recent decisions affecting current work:
 - Research: Branch naming is invitation/{invitationId}, not per-user — avoids multi-invite collisions
 - Research: PDF cannot run on Vercel serverless — Railway/Render/Fly.io or Browserless.io required
 - Research: DeploymentService abstraction layer required from Phase 1 — Vercel quota risk
+- [Phase 01-free-tier-mvp]: Scaffold(01-01): Clerk v7 UserButton drops afterSignOutUrl prop; StubFeatureGate uses clean stub pattern (no dynamic db import); root page.tsx redirect added; package name is save-the-date (no capitals)
 
 ### Pending Todos
 
@@ -76,6 +78,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-09T05:54:29.597Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-free-tier-mvp/01-CONTEXT.md
+Last session: 2026-03-09T17:30:32.057Z
+Stopped at: Completed 01-free-tier-mvp plan 01 (scaffold)
+Resume file: None
