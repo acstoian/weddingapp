@@ -9,7 +9,8 @@ import {
 
 // InvitationFields is the locked JSON contract shared by all templates.
 // Defined in lib/templates/schema.ts and imported here (01-03).
-export type { InvitationFields } from "@/lib/templates/schema";
+import type { InvitationFields } from "@/lib/templates/schema";
+export type { InvitationFields };
 
 export const invitationStatusEnum = pgEnum("invitation_status", [
   "DRAFT",

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+  <rect width="400" height="600" fill="#FAFAF8"/>
+  <rect x="0" y="0" width="400" height="200" fill="#E8EDE9"/>
+  <text x="200" y="310" font-family="serif" font-size="28" fill="#2C2C2C" text-anchor="middle">Elena &amp; Andrei</text>
+  <line x1="170" y1="330" x2="230" y2="330" stroke="#7C9E87" stroke-width="1"/>
+  <text x="200" y="360" font-family="sans-serif" font-size="13" fill="#7C9E87" text-anchor="middle">15 august 2026</text>
+  <text x="200" y="385" font-family="sans-serif" font-size="12" fill="#6B6B6B" text-anchor="middle">Catedrala Sfantul Iosif</text>
+  <text x="200" y="400" font-family="sans-serif" font-size="10" fill="#6B6B6B" text-anchor="middle">Calea Victoriei 56, Bucuresti</text>
+  <text x="200" y="450" font-family="serif" font-size="12" fill="#4A4A4A" text-anchor="middle" font-style="italic">Va asteptam cu drag.</text>
+  <text x="200" y="490" font-family="sans-serif" font-size="9" fill="#7C9E87" text-anchor="middle">LUMINOS</text>
+</svg>
