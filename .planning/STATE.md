@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-free-tier-mvp plan 01 (scaffold)
-last_updated: "2026-03-09T17:30:32.059Z"
+stopped_at: Completed 01-free-tier-mvp plan 02 (schema + DeploymentService)
+last_updated: "2026-03-09T17:59:50.909Z"
 last_activity: 2026-03-09 — Roadmap created; research complete; WABA application not yet started
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 7
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-free-tier-mvp P01 | 45 | 3 tasks | 32 files |
+| Phase 01-free-tier-mvp P02 | 5 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Recent decisions affecting current work:
 - Research: PDF cannot run on Vercel serverless — Railway/Render/Fly.io or Browserless.io required
 - Research: DeploymentService abstraction layer required from Phase 1 — Vercel quota risk
 - [Phase 01-free-tier-mvp]: Scaffold(01-01): Clerk v7 UserButton drops afterSignOutUrl prop; StubFeatureGate uses clean stub pattern (no dynamic db import); root page.tsx redirect added; package name is save-the-date (no capitals)
+- [Phase 01-free-tier-mvp]: Schema(01-02): InvitationFields defined as Record<string,unknown> placeholder; 01-03 replaces with Zod-inferred type
+- [Phase 01-free-tier-mvp]: Schema(01-02): DeploymentService factory pattern established — getDeploymentService() is sole import point; Phase 5 swaps implementation without touching call sites
 
 ### Pending Todos
 
@@ -78,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-09T17:30:32.057Z
-Stopped at: Completed 01-free-tier-mvp plan 01 (scaffold)
+Last session: 2026-03-09T17:59:50.907Z
+Stopped at: Completed 01-free-tier-mvp plan 02 (schema + DeploymentService)
 Resume file: None
