@@ -38,7 +38,7 @@ a live Vercel URL, and share that URL — with zero technical steps required.
   3. User can fill in template fields (couple/child names, event date, venue, upload a photo) and see their changes reflected in the preview without writing any code.
   4. User can click Publish and receive a working Vercel URL within 90 seconds; the live invitation matches what they saw in the editor.
   5. User can return to the dashboard, see their invitation listed with draft or published status, and re-open it to continue editing.
-**Plans**: TBD
+**Plans**: 7 plans
 
 Plans:
 - [ ] 01-01: Platform scaffold — Next.js 16 + Neon/Drizzle + Clerk auth + CI/CD
@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Free Tier MVP | 0/7 | Not started | - |
+| 1. Free Tier MVP | 0/7 | Planned | - |
 | 2. Billing Infrastructure | 0/2 | Not started | - |
 | 3. Gold Tier | 0/2 | Not started | - |
 | 4. Platinum Tier | 0/2 | Not started | - |
