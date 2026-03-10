@@ -17,7 +17,6 @@ interface RenderRequest {
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const MAX_RENDERS = 2;
 const MM_TO_PX = 96 / 25.4;
-const CSS_SCALE = 3;
 
 // ── Browser singleton ─────────────────────────────────────────────────────────
 
@@ -97,11 +96,13 @@ app.post("/render", requireSecret, async (req: Request, res: Response) => {
   try {
     page = await browser!.newPage();
 
-    // Set viewport: physical pixel size = mm * px/mm * CSS_SCALE
+    // Set viewport to match PDF page size exactly.
+    // deviceScaleFactor=2 gives 2× resolution for crisp fonts/images without
+    // changing CSS layout (equivalent to a Retina display).
     await page.setViewport({
-      width: Math.round(widthMm * MM_TO_PX * CSS_SCALE),
-      height: Math.round(heightMm * MM_TO_PX * CSS_SCALE),
-      deviceScaleFactor: 1,
+      width: Math.round(widthMm * MM_TO_PX),
+      height: Math.round(heightMm * MM_TO_PX),
+      deviceScaleFactor: 2,
     });
 
     // Navigate and wait for network idle
@@ -110,13 +111,31 @@ app.post("/render", requireSecret, async (req: Request, res: Response) => {
     // Wait for web fonts to load
     await page.evaluate(() => document.fonts.ready);
 
+    // Clip content to exactly one page.
+    // Templates are designed as scrollable web pages; we force them to fit the
+    // PDF page dimensions so Puppeteer never creates additional pages.
+    await page.addStyleTag({
+      content: `
+        @page { margin: 0 !important; }
+        html, body {
+          width: ${widthMm}mm !important;
+          height: ${heightMm}mm !important;
+          min-height: unset !important;
+          max-height: ${heightMm}mm !important;
+          overflow: hidden !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+      `,
+    });
+
     // Generate PDF at physical print dimensions
     const buffer = await page.pdf({
       width: widthMm + "mm",
       height: heightMm + "mm",
-      scale: 2,
+      scale: 1,
       printBackground: true,
-      margin: { top: "3mm", right: "3mm", bottom: "3mm", left: "3mm" },
+      margin: { top: "0", right: "0", bottom: "0", left: "0" },
     });
 
     const durationMs = Date.now() - start;
