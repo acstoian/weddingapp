@@ -40,7 +40,8 @@ const SAMPLE_FIELDS: InvitationFields = {
 
 // Pre-encode the paths as Octokit will send them
 const GIT_REF_URL = `${BASE}/git/ref/heads%2Fmain`;
-const CONTENTS_URL = `${BASE}/contents/${encodeURIComponent(FILE_PATH)}`;
+// Octokit encodes each path segment separator '/' as '%2F'
+const CONTENTS_URL = `${BASE}/contents/${FILE_PATH.split("/").map(encodeURIComponent).join("%2F")}`;
 
 const server = setupServer(
   // GET /git/ref/heads%2Fmain → base SHA

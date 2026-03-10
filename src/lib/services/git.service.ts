@@ -79,7 +79,7 @@ export class GitService {
       owner: OWNER,
       repo: REPO,
       path: filePath,
-      message: `chore: update invitation ${invitationId}`,
+      message: `chore: publish invitation ${invitationId}`,
       content,
       branch,
       ...(existingFileSha ? { sha: existingFileSha } : {}),

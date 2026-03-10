@@ -50,10 +50,14 @@ export async function POST(_request: Request, context: RouteContext) {
   }
 
   // Real flow: git write → project create/find → deploy trigger
+  // One branch + Vercel project per INVITATION — same URL on re-publish via stored vercelProjectId
   const { branch } = await gitService.writeInvitationBranch(id, invitation.fields);
 
   const deploymentSvc = getDeploymentService();
-  let vercelProjectId = invitation.vercelProjectId;
+
+  let vercelProjectId = invitation.vercelProjectId ?? null;
+  const projectName = `invitation-${id}`;
+
   if (!vercelProjectId) {
     const { projectId } = await deploymentSvc.createOrUpdateProject(id, branch);
     vercelProjectId = projectId;
@@ -64,11 +68,17 @@ export async function POST(_request: Request, context: RouteContext) {
       .set({ vercelProjectId, updatedAt: new Date() })
       .where(eq(invitations.id, id));
 
-    // Inject required env vars into the new Vercel project
+    // Inject all env vars into the new Vercel project
     await setVercelProjectEnvVars(vercelProjectId, id);
+  } else {
+    // Reuse existing project — save ref to this invitation and update INVITATION_ID
+    await db
+      .update(invitations)
+      .set({ vercelProjectId, updatedAt: new Date() })
+      .where(eq(invitations.id, id));
+    await updateInvitationIdEnvVar(vercelProjectId, id);
   }
 
-  const projectName = `invitation-${id}`;
   const { deploymentId } = await deploymentSvc.triggerDeploy(vercelProjectId, projectName, branch);
 
   await db
@@ -89,6 +99,31 @@ export async function POST(_request: Request, context: RouteContext) {
  * Vercel project so the deployed invitation page can initialise Clerk and DB.
  * Best-effort — failure is logged but does not block the publish response.
  */
+/** Updates just the INVITATION_ID env var when reusing an existing Vercel project. */
+async function updateInvitationIdEnvVar(projectId: string, invitationId: string): Promise<void> {
+  try {
+    const res = await fetch(
+      `https://api.vercel.com/v10/projects/${encodeURIComponent(projectId)}/env`,
+      { headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` } }
+    );
+    if (!res.ok) { await setVercelProjectEnvVars(projectId, invitationId); return; }
+    const data = (await res.json()) as { envs: Array<{ id: string; key: string }> };
+    const envVar = data.envs?.find((e) => e.key === "INVITATION_ID");
+    if (!envVar) { await setVercelProjectEnvVars(projectId, invitationId); return; }
+    const patch = await fetch(
+      `https://api.vercel.com/v10/projects/${encodeURIComponent(projectId)}/env/${envVar.id}`,
+      {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ value: invitationId }),
+      }
+    );
+    if (!patch.ok) console.error(`[publish] Failed to update INVITATION_ID: ${patch.status}`);
+  } catch (err) {
+    console.error("[publish] Error updating INVITATION_ID:", err);
+  }
+}
+
 async function setVercelProjectEnvVars(projectId: string, invitationId: string): Promise<void> {
   const vars = [
     {

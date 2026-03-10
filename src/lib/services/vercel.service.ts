@@ -43,7 +43,10 @@ export class VercelDeploymentService implements DeploymentService {
   ): Promise<{ projectId: string; url: string }> {
     const projectName = `invitation-${invitationId}`;
 
-    const res = await fetch(`${VERCEL_API}/v10/projects`, {
+    const createUrl = new URL(`${VERCEL_API}/v10/projects`);
+    if (this.teamId) createUrl.searchParams.set("teamId", this.teamId);
+
+    const res = await fetch(createUrl.toString(), {
       method: "POST",
       headers: this.authHeaders(),
       body: JSON.stringify({
@@ -100,6 +103,7 @@ export class VercelDeploymentService implements DeploymentService {
   ): Promise<{ deploymentId: string }> {
     const url = new URL(`${VERCEL_API}/v13/deployments`);
     if (this.teamId) url.searchParams.set("teamId", this.teamId);
+    url.searchParams.set("skipAutoDetectionConfirmation", "1");
 
     const res = await fetch(url.toString(), {
       method: "POST",
@@ -173,7 +177,7 @@ export class VercelDeploymentService implements DeploymentService {
       }
     );
 
-    if (!res.ok && res.status !== 204) {
+    if (!res.ok && res.status !== 204 && res.status !== 404) {
       throw new Error(`Failed to delete project ${projectId}: ${res.status}`);
     }
   }

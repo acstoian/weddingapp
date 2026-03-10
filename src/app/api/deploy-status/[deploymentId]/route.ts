@@ -7,7 +7,7 @@ import { sendPublishSuccessEmail } from "@/lib/services/email.service";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-export const maxDuration = 120;
+export const maxDuration = 300;
 
 interface RouteContext {
   params: Promise<{ deploymentId: string }>;
