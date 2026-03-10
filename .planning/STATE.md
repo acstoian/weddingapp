@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Billing + Gold
-status: planning
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-10T10:16:37.369Z"
-last_activity: 2026-03-10 — v1.0 MVP shipped and archived
+status: in_progress
+stopped_at: "Completed 02-01-PLAN.md"
+last_updated: "2026-03-10T13:35:00.000Z"
+last_activity: 2026-03-10 — Phase 2 Plan 01 complete (Stripe backend)
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 20
+  total_plans: 2
+  completed_plans: 1
+  percent: 25
 ---
 
 # Project State
@@ -26,18 +26,18 @@ See: .planning/PROJECT.md (updated 2026-03-10 after v1.0 milestone)
 ## Current Position
 
 Phase: 2 of 5 (Billing Infrastructure)
-Plan: 0 of 2 in current phase
-Status: Ready to plan
-Last activity: 2026-03-10 — v1.0 MVP shipped and archived
+Plan: 1 of 2 in current phase (02-01 complete)
+Status: In progress — next: 02-02 (FeatureGate + UI)
+Last activity: 2026-03-10 — 02-01 Stripe billing backend complete
 
-Progress: [██░░░░░░░░] ~20% (1/5 phases complete)
+Progress: [███░░░░░░░] ~25% (02-01 done, 02-02 pending)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7 (Phase 1)
-- Timeline: 2 days for 7 plans
-- Avg: ~7 hours/plan
+- Total plans completed: 8 (7 Phase 1 + 1 Phase 2)
+- Phase 1: 2 days for 7 plans (~7 hours/plan)
+- Phase 2 plan 01: ~6 minutes (backend only, no UI)
 
 ## Accumulated Context
 
@@ -48,6 +48,9 @@ Progress: [██░░░░░░░░] ~20% (1/5 phases complete)
 - Branch naming: invitation/{invitationId} — confirmed correct
 - SSE polling for deploy status — confirmed working within 90s
 - data.alias[] for stable liveUrl — fixed in UAT; must use alias not data.url
+- Stripe one-time payments (not subscriptions) — Gold 99 RON, Platinum 149 RON, upgrade 50 RON
+- stripeEvents table for idempotent webhook processing (unique constraint, code 23505 = skip)
+- emailService object export on email.service.ts — fire-and-forget purchase confirmation
 
 ### Pending Todos
 
@@ -62,6 +65,6 @@ Progress: [██░░░░░░░░] ~20% (1/5 phases complete)
 
 ## Session Continuity
 
-Last session: 2026-03-10T10:16:37.367Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-billing-infrastructure/02-CONTEXT.md
+Last session: 2026-03-10T13:35:00.000Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: .planning/phases/02-billing-infrastructure/02-02-PLAN.md

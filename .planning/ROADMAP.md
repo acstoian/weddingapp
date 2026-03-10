@@ -53,7 +53,7 @@ access server-side — so Gold and Platinum features can be built against a work
 **Plans**: TBD
 
 Plans:
-- [ ] 02-01: Stripe integration — products/prices, Stripe Checkout, webhook handler (idempotent)
+- [x] 02-01: Stripe integration — products/prices, Stripe Checkout, webhook handler (idempotent) — DONE 2026-03-10
 - [ ] 02-02: FeatureGate service — server-side tier check on every gated API route; invitation count limits (1/3/unlimited)
 
 ### Phase 3: Gold Tier
@@ -110,7 +110,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1. Free Tier MVP | v1.0 | 7/7 | Complete | 2026-03-10 |
-| 2. Billing Infrastructure | v1.1 | 0/2 | Not started | - |
+| 2. Billing Infrastructure | v1.1 | 1/2 | In progress | - |
 | 3. Gold Tier | v1.1 | 0/2 | Not started | - |
 | 4. Platinum Tier | v1.2 | 0/2 | Not started | - |
 | 5. Admin Dashboard + Hardening | v2.0 | 0/2 | Not started | - |
