@@ -22,12 +22,14 @@ export const invitationStatusEnum = pgEnum("invitation_status", [
 /**
  * users — mirrors Clerk user; stores app-level user preferences.
  * Primary key is the Clerk user ID (text, not UUID).
+ * Phase 2 adds: stripeCustomerId for returning customer reuse.
  */
 export const users = pgTable("users", {
   id: text("id").primaryKey(), // Clerk user ID
   email: text("email").notNull(),
   tier: text("tier").notNull().default("FREE"), // FREE | GOLD | PLATINUM
   lang: text("lang").notNull().default("ro"), // RO | EN preference
+  stripeCustomerId: text("stripe_customer_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -52,18 +54,14 @@ export const invitations = pgTable("invitations", {
 });
 
 /**
- * subscriptions — stub for Phase 2 Stripe integration.
- * References users.id for FK constraint.
+ * stripeEvents — idempotency log for incoming Stripe webhook events.
+ * Unique constraint on stripeEventId prevents duplicate processing.
+ * Phase 2: replaces the subscriptions table.
  */
-export const subscriptions = pgTable("subscriptions", {
+export const stripeEvents = pgTable("stripe_events", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id),
-  stripeCustomerId: text("stripe_customer_id"),
-  stripeSubId: text("stripe_sub_id"),
-  tier: text("tier").notNull().default("FREE"),
-  currentPeriodEnd: timestamp("current_period_end"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  stripeEventId: text("stripe_event_id").notNull().unique(),
+  eventType: text("event_type").notNull(),
+  userId: text("user_id"),
+  processedAt: timestamp("processed_at").notNull().defaultNow(),
 });
