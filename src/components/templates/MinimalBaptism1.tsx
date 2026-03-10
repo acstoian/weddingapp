@@ -12,6 +12,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { InvitationFields } from "@/lib/templates/schema";
+import { QROverlay } from "./QROverlay";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -80,6 +81,7 @@ export default function MinimalBaptism1(props: InvitationFields) {
               style={{ backgroundColor: "#C8E6F5" }}
             />
           )}
+          <QROverlay />
         </div>
 
         {/* Child name */}

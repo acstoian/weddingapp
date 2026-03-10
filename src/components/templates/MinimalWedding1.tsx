@@ -12,6 +12,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { InvitationFields } from "@/lib/templates/schema";
+import { QROverlay } from "./QROverlay";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -63,6 +64,7 @@ export default function MinimalWedding1(props: InvitationFields) {
             style={{ backgroundColor: "#E8EDE9", minHeight: "40vh" }}
           />
         )}
+        <QROverlay />
       </div>
 
       {/* Content */}

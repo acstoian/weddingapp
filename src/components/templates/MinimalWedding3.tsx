@@ -12,6 +12,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { InvitationFields } from "@/lib/templates/schema";
+import { QROverlay } from "./QROverlay";
 
 const ebGaramond = EB_Garamond({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function MinimalWedding3(props: InvitationFields) {
             style={{ backgroundColor: "#E4EBE4", minHeight: "180px" }}
           />
         )}
+        <QROverlay />
       </div>
 
       {/* Content grid */}

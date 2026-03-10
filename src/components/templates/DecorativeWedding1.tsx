@@ -12,6 +12,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { InvitationFields } from "@/lib/templates/schema";
+import { QROverlay } from "./QROverlay";
 
 const greatVibes = Great_Vibes({
   subsets: ["latin"],
@@ -130,6 +131,7 @@ export default function DecorativeWedding1(props: InvitationFields) {
             className="object-cover"
             style={{ objectFit: "cover" }}
           />
+          <QROverlay />
         </div>
       )}
 

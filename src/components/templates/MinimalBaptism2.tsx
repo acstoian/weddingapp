@@ -12,6 +12,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { InvitationFields } from "@/lib/templates/schema";
+import { QROverlay } from "./QROverlay";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -94,6 +95,7 @@ export default function MinimalBaptism2(props: InvitationFields) {
               style={{ backgroundColor: "#FAD9D9", minHeight: "200px" }}
             />
           )}
+          <QROverlay />
         </div>
 
         {/* Content */}

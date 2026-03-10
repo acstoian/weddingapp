@@ -12,6 +12,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { InvitationFields } from "@/lib/templates/schema";
+import { QROverlay } from "./QROverlay";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function MinimalWedding2(props: InvitationFields) {
             style={{ backgroundColor: "#F0E4D8", minHeight: "300px" }}
           />
         )}
+        <QROverlay />
       </div>
 
       {/* Content — right 60% on desktop */}
