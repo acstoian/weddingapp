@@ -27,7 +27,7 @@ Full archive: `.planning/milestones/v1.0-ROADMAP.md`
 
 ### 🚧 v1.1 Billing + Gold (Phases 2-3)
 
-- [ ] **Phase 2: Billing Infrastructure** - Stripe subscriptions + FeatureGate service + tier-gated API routes
+- [x] **Phase 2: Billing Infrastructure** - Stripe subscriptions + FeatureGate service + tier-gated API routes (completed 2026-03-10)
 - [ ] **Phase 3: Gold Tier** - PDF print export (A4/A5) via dedicated Puppeteer compute + QR code on publish
 
 ### 📋 v1.2 Platinum (Phase 4)
@@ -110,7 +110,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1. Free Tier MVP | v1.0 | 7/7 | Complete | 2026-03-10 |
-| 2. Billing Infrastructure | v1.1 | 1/2 | In progress | - |
+| 2. Billing Infrastructure | 2/2 | Complete   | 2026-03-10 | - |
 | 3. Gold Tier | v1.1 | 0/2 | Not started | - |
 | 4. Platinum Tier | v1.2 | 0/2 | Not started | - |
 | 5. Admin Dashboard + Hardening | v2.0 | 0/2 | Not started | - |

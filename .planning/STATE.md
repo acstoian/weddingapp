@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Billing + Gold
-status: in_progress
-stopped_at: "Completed 02-01-PLAN.md"
-last_updated: "2026-03-10T13:35:00.000Z"
-last_activity: 2026-03-10 — Phase 2 Plan 01 complete (Stripe backend)
+status: executing
+stopped_at: "Completed 02-02-PLAN.md — checkpoint:human-verify pending"
+last_updated: "2026-03-10T15:15:00.000Z"
+last_activity: 2026-03-10 — 02-02 FeatureGate + Billing UI complete (4/4 auto tasks done; checkpoint pending)
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
-  percent: 25
+  completed_plans: 2
+  percent: 50
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-10 after v1.0 milestone)
 ## Current Position
 
 Phase: 2 of 5 (Billing Infrastructure)
-Plan: 1 of 2 in current phase (02-01 complete)
-Status: In progress — next: 02-02 (FeatureGate + UI)
-Last activity: 2026-03-10 — 02-01 Stripe billing backend complete
+Plan: 2 of 2 in current phase (02-02 auto tasks complete — checkpoint:human-verify pending)
+Status: In progress — awaiting human verification of billing UI
+Last activity: 2026-03-10 — 02-02 FeatureGate + UI: 4 tasks committed, checkpoint pending
 
-Progress: [███░░░░░░░] ~25% (02-01 done, 02-02 pending)
+Progress: [█████░░░░░] ~50% (02-01 done, 02-02 tasks done — checkpoint pending)
 
 ## Performance Metrics
 
@@ -51,6 +51,11 @@ Progress: [███░░░░░░░] ~25% (02-01 done, 02-02 pending)
 - Stripe one-time payments (not subscriptions) — Gold 99 RON, Platinum 149 RON, upgrade 50 RON
 - stripeEvents table for idempotent webhook processing (unique constraint, code 23505 = skip)
 - emailService object export on email.service.ts — fire-and-forget purchase confirmation
+- StripeFeatureGate: upsert user row on getUserTier to ensure row exists before gate check
+- PricingCards client component pattern: server fetches tier, client handles checkout redirect
+- Locked feature UI: wrapper div is clickable, inner button has disabled attr (pointer-events workaround)
+- DashboardUsageBar returns null for non-FREE users — avoids clutter for paid users
+- Billing success polls tier !== FREE (not specific tier) — works for both GOLD and PLATINUM upgrades
 
 ### Pending Todos
 
@@ -65,6 +70,6 @@ Progress: [███░░░░░░░] ~25% (02-01 done, 02-02 pending)
 
 ## Session Continuity
 
-Last session: 2026-03-10T13:35:00.000Z
-Stopped at: Completed 02-01-PLAN.md
-Resume file: .planning/phases/02-billing-infrastructure/02-02-PLAN.md
+Last session: 2026-03-10T15:15:00.000Z
+Stopped at: "02-02 checkpoint:human-verify — tasks 1-4 complete, awaiting manual verification"
+Resume file: .planning/phases/02-billing-infrastructure/02-02-PLAN.md (task 5 checkpoint)
