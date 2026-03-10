@@ -3,19 +3,42 @@
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import type { Tier } from "@/lib/feature-gate";
 
 type Lang = "ro" | "en";
 
 const LANG_STORAGE_KEY = "lang";
 
+const TIER_BADGE: Record<Tier, { label: string; className: string }> = {
+  FREE: { label: "Free", className: "bg-gray-100 text-gray-600" },
+  GOLD: { label: "Gold", className: "bg-amber-100 text-amber-700" },
+  PLATINUM: { label: "Platinum", className: "bg-purple-100 text-purple-700" },
+};
+
 export default function TopNav() {
   const [activeLang, setActiveLang] = useState<Lang>("ro");
+  const [tier, setTier] = useState<Tier>("FREE");
 
+  // Load lang preference from localStorage
   useEffect(() => {
     const stored = localStorage.getItem(LANG_STORAGE_KEY) as Lang | null;
     if (stored === "ro" || stored === "en") {
       setActiveLang(stored);
     }
+  }, []);
+
+  // Fetch user's current tier from API
+  useEffect(() => {
+    fetch("/api/user/tier")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.tier && (data.tier === "FREE" || data.tier === "GOLD" || data.tier === "PLATINUM")) {
+          setTier(data.tier as Tier);
+        }
+      })
+      .catch(() => {
+        // Silently ignore — default FREE is shown
+      });
   }, []);
 
   function handleLangToggle(lang: Lang) {
@@ -24,6 +47,8 @@ export default function TopNav() {
     // Set a cookie so server components can read the preference
     document.cookie = `lang=${lang};path=/;max-age=31536000;SameSite=Lax`;
   }
+
+  const badge = TIER_BADGE[tier];
 
   return (
     <nav
@@ -39,13 +64,22 @@ export default function TopNav() {
       </Link>
 
       <div className="ml-auto flex items-center gap-4">
-        {/* Tier badge */}
-        <span
-          aria-label="Current plan: Free tier"
-          className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600"
+        {/* Preturi link */}
+        <Link
+          href="/pricing"
+          className="text-sm font-medium text-gray-600 transition-colors duration-150 hover:text-[#DB2777] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#DB2777] focus-visible:ring-offset-2 rounded"
         >
-          Free
-        </span>
+          Preturi
+        </Link>
+
+        {/* Tier badge — links to pricing page */}
+        <Link
+          href="/pricing"
+          aria-label={`Planul tau actual: ${badge.label}`}
+          className={`rounded-full px-3 py-1 text-xs font-medium transition-opacity duration-150 hover:opacity-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#DB2777] focus-visible:ring-offset-2 ${badge.className}`}
+        >
+          {badge.label}
+        </Link>
 
         {/* Language toggle */}
         <div
