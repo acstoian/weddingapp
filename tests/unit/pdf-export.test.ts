@@ -53,10 +53,10 @@ import { featureGate } from "@/lib/feature-gate";
 import { renderPdf, PdfServiceError } from "@/lib/services/pdf.service";
 import { POST } from "@/app/api/export/pdf/[id]/route";
 
-const mockAuth = auth as ReturnType<typeof vi.fn>;
-const mockDb = db as { select: ReturnType<typeof vi.fn> };
-const mockFeatureGate = featureGate as { canExportPdf: ReturnType<typeof vi.fn> };
-const mockRenderPdf = renderPdf as ReturnType<typeof vi.fn>;
+const mockAuth = auth as unknown as ReturnType<typeof vi.fn>;
+const mockDb = db as unknown as { select: ReturnType<typeof vi.fn> };
+const mockFeatureGate = featureGate as unknown as { canExportPdf: ReturnType<typeof vi.fn> };
+const mockRenderPdf = renderPdf as unknown as ReturnType<typeof vi.fn>;
 
 function makeDbSelect(rows: unknown[]) {
   return {

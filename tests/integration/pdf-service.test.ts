@@ -1,3 +1,5 @@
+/// <reference types="vitest/globals" />
+
 /**
  * Integration tests for the Railway PDF microservice.
  *

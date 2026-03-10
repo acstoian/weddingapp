@@ -11,6 +11,7 @@ export type Tier = "FREE" | "GOLD" | "PLATINUM";
 export interface FeatureGate {
   canPublish(userId: string): Promise<{ allowed: boolean; reason?: string }>;
   canCreateDraft(userId: string): Promise<{ allowed: boolean; reason?: string }>;
+  canExportPdf(userId: string): Promise<{ allowed: boolean; reason?: string }>;
   getUserTier(userId: string): Promise<Tier>;
 }
 
@@ -58,6 +59,16 @@ export class StripeFeatureGate implements FeatureGate {
     }
 
     return { allowed: true };
+  }
+
+  /**
+   * Returns { allowed: true } for GOLD and PLATINUM users.
+   * FREE users cannot export PDFs.
+   */
+  async canExportPdf(userId: string): Promise<{ allowed: boolean; reason?: string }> {
+    const tier = await this.getUserTier(userId);
+    if (tier === "GOLD" || tier === "PLATINUM") return { allowed: true };
+    return { allowed: false, reason: "Gold tier required" };
   }
 
   /**
