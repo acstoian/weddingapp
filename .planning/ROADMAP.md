@@ -27,8 +27,8 @@ Full archive: `.planning/milestones/v1.0-ROADMAP.md`
 
 ### 🚧 v1.1 Billing + Gold (Phases 2-3)
 
-- [x] **Phase 2: Billing Infrastructure** - Stripe subscriptions + FeatureGate service + tier-gated API routes (completed 2026-03-10)
-- [ ] **Phase 3: Gold Tier** - PDF print export (A4/A5) via dedicated Puppeteer compute + QR code on publish
+- [x] **Phase 2: Billing Infrastructure** - Stripe subscriptions + FeatureGate service + tier-gated API routes (completed 2026-03-10)
+- [ ] **Phase 3: Gold Tier** - PDF print export (Card 100×150mm / Pliant 148×200mm) via dedicated Puppeteer compute on Railway + QR code embedded in PDF
 
 ### 📋 v1.2 Platinum (Phase 4)
 
@@ -50,27 +50,26 @@ access server-side — so Gold and Platinum features can be built against a work
   2. Free-tier user attempting Gold-gated action gets a clear upgrade prompt, not an error.
   3. Downgrade locks gated features at end of billing period; invitation data never deleted.
   4. Failed payment returns account to Free tier within one billing cycle; Stripe webhook + DB stay in sync.
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [x] 02-01: Stripe integration — products/prices, Stripe Checkout, webhook handler (idempotent) — DONE 2026-03-10
 - [x] 02-02: FeatureGate service — StripeFeatureGate, pricing page, upgrade modal, TopNav tier badge, billing success/cancel pages, editor locked features — DONE 2026-03-10
 
 ### Phase 3: Gold Tier
-**Goal**: Gold subscribers can download a print-ready PDF of their invitation in A4 or A5, and
-receive a QR code pointing to their live URL.
+**Goal**: Gold subscribers can download a print-ready PDF of their invitation in Card (100×150mm) or Pliant (148×200mm), with QR code embedded in the PDF pointing to the live URL.
 **Depends on**: Phase 2
 **Requirements**: Gold tier: PDF print export in standard sizes
 **Success Criteria**:
-  1. Gold user can click "Download PDF", select A4 or A5, receive print-shop-ready file (300 DPI equivalent, fonts embedded).
+  1. Gold user can click "Download PDF", select Card (10x15cm) or Pliant (15x20cm), receive print-shop-ready file (300 DPI equivalent, fonts embedded).
   2. PDF is pixel-faithful to browser view including custom fonts and uploaded photo.
-  3. QR code pointing to live URL generated on publish, available for download from dashboard.
+  3. QR code pointing to live URL embedded bottom-center of photo area in PDF.
   4. PDF generation does not block the main platform.
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: PDF compute environment — deploy Puppeteer + @sparticuz/chromium on Railway/Render/Fly.io (spike first)
-- [ ] 03-02: PDF export service — headless render, A4/A5 config, font-wait, stream-back; QR code generation on publish
+- [ ] 03-01-PLAN.md — PDF compute service: Railway microservice (/services/pdf-renderer) + FeatureGate.canExportPdf() + pdf.service.ts + /api/export/pdf/[id] route + Wave 0 tests
+- [ ] 03-02-PLAN.md — Frontend integration: PdfExportButton size selector + isLive wiring + QR overlay in all 6 templates + human checkpoint
 
 ### Phase 4: Platinum Tier
 **Goal**: Platinum subscribers can manage a guest list and send their invitation URL to every guest
