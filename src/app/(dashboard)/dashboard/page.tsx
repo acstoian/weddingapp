@@ -1,13 +1,15 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { invitations } from "@/lib/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { invitations, users } from "@/lib/db/schema";
+import { eq, desc, and, count } from "drizzle-orm";
 import InvitationCard, {
   type InvitationRow,
 } from "@/components/dashboard/InvitationCard";
 import EmptyState from "@/components/dashboard/EmptyState";
+import DashboardUsageBar from "@/components/dashboard/DashboardUsageBar";
 import { templates } from "@/lib/templates/registry";
+import type { Tier } from "@/lib/feature-gate";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +30,27 @@ export default async function DashboardPage() {
     .from(invitations)
     .where(eq(invitations.userId, userId))
     .orderBy(desc(invitations.updatedAt));
+
+  // Fetch user tier
+  const [userRow] = await db
+    .select({ tier: users.tier })
+    .from(users)
+    .where(eq(users.id, userId));
+  const tier = (userRow?.tier ?? "FREE") as Tier;
+
+  // Count drafts and live invitations for usage bar
+  const [draftCountRow] = await db
+    .select({ value: count() })
+    .from(invitations)
+    .where(and(eq(invitations.userId, userId), eq(invitations.status, "DRAFT")));
+
+  const [liveCountRow] = await db
+    .select({ value: count() })
+    .from(invitations)
+    .where(and(eq(invitations.userId, userId), eq(invitations.status, "LIVE")));
+
+  const draftCount = draftCountRow?.value ?? 0;
+  const liveCount = liveCountRow?.value ?? 0;
 
   // Enrich with thumbnail from registry (registry lookup is O(n) but n=6 always)
   const enrichedRows: InvitationRow[] = rows.map((row) => {
@@ -50,6 +73,13 @@ export default async function DashboardPage() {
           Gestioneaza si publica invitatiile tale digitale
         </p>
       </div>
+
+      {/* Usage bar (client component — only visible for FREE tier) */}
+      <DashboardUsageBar
+        draftCount={draftCount}
+        liveCount={liveCount}
+        tier={tier}
+      />
 
       {enrichedRows.length === 0 ? (
         <EmptyState />
