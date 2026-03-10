@@ -6,6 +6,8 @@ import { eq, and } from "drizzle-orm";
 import { getTemplate } from "@/lib/templates/registry";
 import EditorLayout from "@/components/editor/EditorLayout";
 import type { InvitationFields } from "@/lib/templates/schema";
+import { featureGate } from "@/lib/feature-gate";
+import type { Tier } from "@/lib/feature-gate";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +35,8 @@ export default async function EditorPage({ params }: PageProps) {
     redirect("/dashboard");
   }
 
+  const tier: Tier = await featureGate.getUserTier(userId);
+
   // Serialize invitation for client component
   const invitation = {
     id: row.id,
@@ -49,5 +53,12 @@ export default async function EditorPage({ params }: PageProps) {
     updatedAt: row.updatedAt.toISOString(),
   };
 
-  return <EditorLayout invitation={invitation} templateDef={templateDef} />;
+  return (
+    <EditorLayout
+      invitation={invitation}
+      templateDef={templateDef}
+      tier={tier}
+      initialIsLive={row.status === "LIVE"}
+    />
+  );
 }

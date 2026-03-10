@@ -9,6 +9,7 @@ interface PublishProgressProps {
   invitationId: string;
   deploymentId: string | null;
   onRetry: () => void;
+  onPublished?: () => void;
 }
 
 const STAGE_LABELS: Record<PublishStage, string> = {
@@ -22,6 +23,7 @@ export default function PublishProgress({
   invitationId,
   deploymentId,
   onRetry,
+  onPublished,
 }: PublishProgressProps) {
   const [stage, setStage] = useState<PublishStage>("preparing");
   const [liveUrl, setLiveUrl] = useState<string | null>(null);
@@ -53,6 +55,7 @@ export default function PublishProgress({
       } else if (data.status === "READY") {
         setStage("live");
         setLiveUrl(data.url ?? null);
+        onPublished?.();
         source.close();
       } else if (data.status === "ERROR") {
         setStage("error");

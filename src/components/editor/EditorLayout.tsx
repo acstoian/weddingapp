@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import type { InvitationFields } from "@/lib/templates/schema";
 import type { TemplateDefinition } from "@/lib/templates/registry";
+import type { Tier } from "@/lib/feature-gate";
 import FieldSidebar from "./FieldSidebar";
 import LivePreview from "./LivePreview";
 import PublishButton from "./PublishButton";
@@ -27,6 +28,8 @@ interface SerializedInvitation {
 interface EditorLayoutProps {
   invitation: SerializedInvitation;
   templateDef: TemplateDefinition;
+  tier: Tier;
+  initialIsLive: boolean;
 }
 
 type MobileTab = "edit" | "preview";
@@ -34,9 +37,13 @@ type MobileTab = "edit" | "preview";
 export default function EditorLayout({
   invitation,
   templateDef,
+  tier,
+  initialIsLive,
 }: EditorLayoutProps) {
   const [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>("idle");
   const [mobileTab, setMobileTab] = useState<MobileTab>("edit");
+  const [isLive, setIsLive] = useState<boolean>(initialIsLive);
+  const handlePublished = useCallback(() => setIsLive(true), []);
 
   const form = useForm<InvitationFields>({
     defaultValues: invitation.fields,
@@ -120,6 +127,9 @@ export default function EditorLayout({
               templateId={invitation.templateId}
               invitationId={invitation.id}
               autosaveStatus={autosaveStatus}
+              tier={tier}
+              isLive={isLive}
+              onPublished={handlePublished}
             />
           </div>
         </aside>

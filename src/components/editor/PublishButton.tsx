@@ -16,9 +16,10 @@ import PublishProgress from "./PublishProgress";
 
 interface PublishButtonProps {
   invitationId: string;
+  onPublished?: () => void;
 }
 
-export default function PublishButton({ invitationId }: PublishButtonProps) {
+export default function PublishButton({ invitationId, onPublished }: PublishButtonProps) {
   const [isPublishing, setIsPublishing] = useState(false);
   const [deploymentId, setDeploymentId] = useState<string | null>(null);
 
@@ -54,6 +55,7 @@ export default function PublishButton({ invitationId }: PublishButtonProps) {
         invitationId={invitationId}
         deploymentId={deploymentId}
         onRetry={handleRetry}
+        onPublished={onPublished}
       />
     );
   }

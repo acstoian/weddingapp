@@ -18,14 +18,19 @@ import {
 import PhotoUpload from "./PhotoUpload";
 import AutosaveIndicator from "./AutosaveIndicator";
 import PublishButton from "./PublishButton";
+import { PdfExportButton } from "./EditorLockedFeatures";
 import type { InvitationFields } from "@/lib/templates/schema";
 import type { AutosaveStatus } from "./useAutosave";
+import type { Tier } from "@/lib/feature-gate";
 
 interface FieldSidebarProps {
   form: UseFormReturn<InvitationFields>;
   templateId: string;
   invitationId: string;
   autosaveStatus: AutosaveStatus;
+  tier: Tier;
+  isLive: boolean;
+  onPublished: () => void;
 }
 
 function isWeddingTemplate(templateId: string): boolean {
@@ -42,6 +47,9 @@ export default function FieldSidebar({
   templateId,
   invitationId,
   autosaveStatus,
+  tier,
+  isLive,
+  onPublished,
 }: FieldSidebarProps) {
   const router = useRouter();
   const { register, watch, setValue, formState: { errors } } = form;
@@ -205,12 +213,17 @@ export default function FieldSidebar({
         </div>
       </div>
 
-      {/* Sticky bottom: autosave + publish */}
+      {/* Sticky bottom: autosave + publish + PDF export */}
       <div className="border-t border-[#FBCFE8] bg-white px-5 py-4 space-y-3">
         <div className="flex items-center justify-between">
           <AutosaveIndicator status={autosaveStatus} />
         </div>
-        <PublishButton invitationId={invitationId} />
+        <PublishButton invitationId={invitationId} onPublished={onPublished} />
+        <PdfExportButton
+          tier={tier}
+          invitationId={invitationId}
+          isLive={isLive}
+        />
       </div>
     </div>
   );
