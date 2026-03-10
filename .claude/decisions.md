@@ -38,6 +38,46 @@
 
 ---
 
+## 2026-03-10 — Phase 2 Execution Discoveries
+
+### Next.js 15+: params is a Promise in Route Handlers
+**Decision:** All dynamic API route handlers use `{ params }: { params: Promise<{ id: string }> }` with `await params`.
+**Rationale:** Breaking change in Next.js 15 — params is now async. Accessing `params.id` without await returns `undefined`, causing silent DB failures (0 rows updated). Discovered when admin tier reset appeared to succeed but didn't update the DB.
+
+### Checkout error handling: always reset loading state
+**Decision:** PricingCards resets `loadingTier` both on successful redirect AND on any API error (no URL in response).
+**Rationale:** If the API returns a non-URL response (4xx/5xx), the button must reset — otherwise it stays stuck on "Se incarca..." forever with no way for the user to retry.
+
+### Upsert user before checkout (defensive pattern)
+**Decision:** `billing.service.ts` upserts the user row before the checkout select, same as `StripeFeatureGate.getUserTier`.
+**Rationale:** Users who signed up before the Clerk sync webhook was wired, or whose webhook failed, will not have a row in `users`. A plain `select` returns null → throws "User not found" → 500. Upsert with `onConflictDoNothing` is safe and idempotent.
+
+---
+
+## 2026-03-10 — Phase 3 Gold Tier Decisions (discuss-phase)
+
+### PDF print sizes: 100×150mm (Card) and 148×200mm (Pliant)
+**Decision:** PDF export uses two custom sizes — Card (100×150mm) and Pliant (148×200mm) — not A4/A5.
+**Rationale:** These match Romanian print-shop standard invitation formats. User-facing labels "Card" and "Pliant" are more intuitive than dimensions alone; dimensions shown in parentheses.
+
+### PDF rendered from live Vercel URL (not template data)
+**Decision:** Puppeteer navigates to the invitation's live URL + `?print=true`. PDF export requires the invitation to be published (status === LIVE).
+**Rationale:** Pixel-faithful to what guests see. No duplicate render logic. Live URL is publicly accessible — no auth bypass needed. Unpublished invitations show disabled button with "Publica mai intai" tooltip.
+
+### Railway for PDF compute (cold start acceptable)
+**Decision:** Express + TypeScript microservice at `/services/pdf-renderer`, deployed to Railway hobby plan. `puppeteer-core` + `@sparticuz/chromium`, `ghcr.io/puppeteer/puppeteer` Docker base. Single persistent browser instance, 2 concurrent render limit.
+**Rationale:** Railway is the simplest Docker deploy with good DX. Cold start is acceptable at this volume. Single persistent browser avoids per-request launch overhead. 2-concurrent limit prevents OOM on 512MB instance.
+
+### QR code embedded in PDF at bottom-center of photo
+**Decision:** QR code is not a separate download — it's rendered inside the invitation page when `?print=true` is in the URL, positioned at the bottom-center of the photo area. Must not cover any text or UI elements. 15×15mm, white rounded background, `qrcode.react` SVG.
+**Rationale:** Users want the QR accessible directly on the printed invitation. Bottom-center of photo is the least likely position to conflict with centered text (names, dates) which are typically in the upper portion of the photo or outside it entirely.
+
+### canExportPdf() added to FeatureGate interface
+**Decision:** New `canExportPdf(userId)` method on `FeatureGate` interface, returning allowed for GOLD + PLATINUM. Same pattern as `canPublish()`.
+**Rationale:** Consistent gate pattern. Route handlers call the gate; gate reads DB. No inline tier checks in route handlers.
+
+---
+
 ## 2026-03-09 — Phase 1 UX & Product Decisions (discuss-phase)
 
 ### Template distribution: 3 minimal + 1 decorative wedding, 2 minimal baptism

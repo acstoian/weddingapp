@@ -2,6 +2,85 @@
 
 ---
 
+## 2026-03-10 — Phase 3 Context Gathering (Session 10)
+
+### Tasks Completed
+- Ran `/gsd:discuss-phase 3` — exhaustive context gathering for Phase 3 (Gold Tier)
+- Covered all 4 gray areas: PDF source & rendering, Export UX flow, QR code delivery, PDF compute provider
+- Key decisions: Railway microservice, 100×150mm / 148×200mm sizes (not A4/A5), QR embedded in PDF at bottom-center of photo (no text overlap), `?print=true` trigger, `qrcode.react`
+- Created `.planning/phases/03-gold-tier/03-CONTEXT.md` (174 lines, all implementation decisions locked)
+- Committed: `d0b32a8` (CONTEXT.md), `a00029c` (STATE.md)
+
+### What Changed
+- `.planning/phases/03-gold-tier/03-CONTEXT.md` — created (new phase directory)
+- `.planning/STATE.md` — session recorded
+
+---
+
+## 2026-03-10 — Phase 2 Execution (Session 9)
+
+### Tasks Completed
+- Executed Phase 2 (billing-infrastructure) end-to-end via `/gsd:execute-phase 2`
+- Wave 1 (02-01): Stripe backend complete — schema migration, Stripe singleton, checkout route, idempotent webhook handler. 9 tests.
+- Wave 2 (02-02): StripeFeatureGate + all billing UI complete — feature gate, pricing page rewrite, UpgradeModal, TopNav badge, billing success/cancel, DashboardUsageBar, EditorLockedFeatures. 24 tests.
+- Human checkpoint verified: all 8 billing scenarios passed (Free/Gold/Platinum purchase, webhook tier update, admin reset, EditorLockedFeatures)
+- Phase 2 verification: 13/13 must-haves, human approved
+- Phase 2 marked complete in ROADMAP.md + STATE.md
+
+### What Changed
+- `src/lib/db/schema.ts` — dropped subscriptions, added stripeCustomerId + stripeEvents
+- `drizzle/migrations/0001_billing_phase.sql` — applied migration
+- `src/lib/stripe.ts` — new
+- `src/lib/services/billing.service.ts` — new
+- `src/lib/services/email.service.ts` — added sendPurchaseConfirmation
+- `src/app/api/billing/checkout/route.ts` — new
+- `src/app/api/webhooks/stripe/route.ts` — new
+- `src/lib/feature-gate.ts` — StubFeatureGate replaced with StripeFeatureGate
+- `src/app/api/user/tier/route.ts` — new
+- `src/app/api/admin/users/[id]/tier/route.ts` — new (params awaited for Next.js 15+)
+- `src/app/(dashboard)/pricing/page.tsx` + PricingCards.tsx + FaqAccordion.tsx — full rewrite
+- `src/components/upgrade/UpgradeModal.tsx` — new
+- `src/components/nav/TopNav.tsx` — added tier badge + Preturi link
+- `src/app/(billing)/billing/success/page.tsx` + cancel/page.tsx — new
+- `src/components/dashboard/DashboardUsageBar.tsx` — new
+- `src/components/editor/EditorLockedFeatures.tsx` — new
+- `tests/unit/billing/*.test.ts` — 6 new test files, 24 tests
+
+### Bugs Fixed During Verification
+1. **Checkout button stuck on "Se incarca..."** — `setLoadingTier(null)` only called in catch, not when API returned error without URL. Fixed to reset on any non-URL response.
+2. **User not found in checkout** — `billing.service.ts` did plain select; users who bypassed Clerk sync webhook weren't in DB. Fixed: added upsert before select (mirrors StripeFeatureGate pattern).
+3. **Admin tier endpoint silently did nothing** — Next.js 15+ requires `params` to be awaited in route handlers; `params.id` was `undefined`, causing 0-row DB update with false `{success:true}` response. Fixed: `const { id } = await params`.
+
+### Key Insight: Next.js 15+ params
+All dynamic route handlers must use `{ params }: { params: Promise<{ id: string }> }` and `await params`. This is a breaking change from Next.js 14.
+
+---
+
+## 2026-03-10 — Phase 2 Planning + Stripe Setup (Session 8)
+
+### Tasks Completed
+- Ran `/gsd:plan-phase 2` — full research → plan → verify loop
+- `02-RESEARCH.md` created by gsd-phase-researcher (key findings: raw body gotcha, customer_creation gotcha, idempotency pattern, RON confirmed)
+- `02-VALIDATION.md` created (Nyquist strategy, 9 tasks mapped, 5 manual verifications)
+- `02-01-PLAN.md` + `02-02-PLAN.md` created by gsd-planner
+- gsd-plan-checker found 3 issues → planner revised → checker passed on iteration 2
+- All planning artifacts committed (`13de701`, `a3e76c8`, `a0f8edd`)
+- Completed `.env.local` Stripe setup: all 6 vars populated (secret key, webhook secret, 3 price IDs, app URL, admin secret)
+
+### What Changed
+- `.planning/phases/02-billing-infrastructure/02-RESEARCH.md` — new
+- `.planning/phases/02-billing-infrastructure/02-VALIDATION.md` — new
+- `.planning/phases/02-billing-infrastructure/02-01-PLAN.md` — new
+- `.planning/phases/02-billing-infrastructure/02-02-PLAN.md` — new (includes Task 4: EditorLockedFeatures)
+- `.env.local` — STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, 3 price IDs, NEXT_PUBLIC_APP_URL, ADMIN_SECRET added
+
+### Issues Encountered
+- User accidentally pasted Stripe secret key in chat (twice) — advised to roll key; second attempt was same key; third paste was new key confirmed different
+- User provided `prod_...` product IDs instead of `price_...` price IDs — clarified distinction, user retrieved correct price IDs on third try
+- Checker revision loop: 1 iteration needed (3 issues: editor locked-feature visuals missing, VALIDATION.md test paths wrong, BILLING-04 test coverage implicit)
+
+---
+
 ## 2026-03-10 — Phase 2 Context Gathering (Session 7)
 
 ### Tasks Completed
