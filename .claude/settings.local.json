@@ -1,0 +1,62 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /c/Work/WeddingGame log --oneline -10)",
+      "Bash(npx get-shit-done-cc@latest)",
+      "Bash(node \"$HOME/.claude/get-shit-done/bin/gsd-tools.cjs\" commit \"docs: initialize project\" --files .planning/PROJECT.md)",
+      "Skill(gsd:progress)",
+      "Bash(git -C C:/Work/WeddingGame log --oneline -8)",
+      "Skill(gsd:plan-phase)",
+      "Skill(gsd:plan-phase:*)",
+      "Bash(git add .planning/phases/01-free-tier-mvp/01-RESEARCH.md)",
+      "Bash(git commit -m \"docs\\(01\\): add phase 1 research\")",
+      "Skill(gsd:execute-phase)",
+      "Skill(gsd:execute-phase:*)",
+      "Bash(pnpm test:unit:*)",
+      "Bash(pnpm build:*)",
+      "Bash(node:*)",
+      "Bash(npx drizzle-kit:*)",
+      "Bash(do:*)",
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(py:*)",
+      "Bash(C:/Work/WeddingGame/public/templates/minimal-wedding-1-thumb.svg:*)",
+      "Bash(python:*)",
+      "Bash(where:*)",
+      "Bash(pnpm add:*)",
+      "Bash(grep:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(git diff HEAD -- src/lib/services/deployment.service.ts src/lib/services/vercel.service.ts src/app/api/publish/[id]/route.ts 2>&1 | head -80)",
+      "Bash(git show HEAD:src/app/api/publish/[id]/route.ts 2>&1 | head -20)",
+      "Bash(git add \\\\\n  .gitignore CLAUDE.md package.json pnpm-lock.yaml \\\\\n  src/ \\\\\n  tests/ \\\\\n  .planning/phases/01-free-tier-mvp/01-04-SUMMARY.md \\\\\n  .planning/phases/01-free-tier-mvp/01-05-SUMMARY.md \\\\\n  .planning/phases/01-free-tier-mvp/01-06-SUMMARY.md \\\\\n  .planning/phases/01-free-tier-mvp/01-07-SUMMARY.md \\\\\n  2>&1)",
+      "Bash(git commit -m \"$\\(cat <<'EOF'\nfeat\\(01-03 to 01-07\\): complete Phase 1 free-tier MVP\n\nWaves 3-5 of the Phase 1 roadmap — all features verified and approved.\n\n## Wave 3: Template registry + GitService \\(01-03, 01-06\\)\n- InvitationFields Zod schema with 7 validated fields\n- Template registry with 6 production-ready components \\(3 minimal wedding,\n  1 decorative wedding, 2 minimal baptism\\) — date guard fix applied to all\n- GitService: creates/updates invitation/{id} branches via Octokit REST API\n- Tests: git-service \\(3/3\\), schema/registry \\(12/12\\)\n\n## Wave 4: Dashboard, gallery, in-browser editor \\(01-04, 01-05\\)\n- Dashboard with EmptyState + InvitationCard components\n- Template gallery with FreeLimitBanner and preview modal\n- Field-based editor: single FieldSidebar, live preview, autosave \\(2s debounce\\)\n- PhotoUpload via Vercel Blob \\(5MB limit, JPEG/PNG/WebP\\)\n- PublishButton + PublishProgress with SSE progress indicator\n- Invitation CRUD API: GET/POST /api/invitations, GET/PATCH/DELETE /api/invitations/[id]\n- Upload API: POST /api/upload\n- Tests: invitations \\(8/8\\), autosave \\(3/3\\), upload \\(4/4\\)\n\n## Wave 5: Vercel deploy pipeline \\(01-07\\)\n- POST /api/publish/[id]: git write → project create/find → deploy trigger\n  - Saves vercelProjectId before triggerDeploy so retries reuse same project\n  - Injects env vars \\(DATABASE_URL, Clerk, Blob\\) into new Vercel projects\n- GET /api/deploy-status/[deploymentId]: SSE stream, polls every 3s,\n  updates DB on READY/ERROR, sends Resend email on success\n- email.service.ts: sendPublishSuccessEmail via Resend \\(graceful fallback\\)\n- triggerDeploy fix: correct project name + teamId query param for Vercel v13 API\n- Tests: deployment \\(6/6\\) — pollStatus, triggerDeploy, SSE shape\n- Total: 45/45 tests passing\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push origin master 2>&1)",
+      "Bash(git push origin master:main 2>&1)",
+      "Bash(git add src/app/api/deploy-status/[deploymentId]/route.ts src/app/api/publish/[id]/route.ts src/lib/services/git.service.ts src/lib/services/vercel.service.ts tests/unit/git-service.test.ts && git commit -m \"$\\(cat <<'EOF'\nfix\\(01-07\\): correct branch naming, file path, and Vercel project creation\n\n- git.service: use invitation/{invitationId} branch \\(was user/{userId}\\)\n- git.service: write to invitations/{id}/invitation-config.json \\(was root\\)\n- publish route: pass invitationId to createOrUpdateProject \\(not userId slug\\)\n- vercel.service: include teamId on project creation POST request\n- vercel.service: treat 404 as success on deleteProject \\(idempotent delete\\)\n- git-service.test: update fixtures and signatures to match new branch/path\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Skill(gsd:verify-work)",
+      "Bash(grep -n \"afterSignInUrl\\\\|afterSignUpUrl\\\\|redirectUrl\\\\|forceRedirectUrl\\\\|fallbackRedirectUrl\" /c/Work/WeddingGame/src/app/layout.tsx /c/Work/WeddingGame/src/middleware.ts /c/Work/WeddingGame/src/app/\\\\\\(auth\\\\\\)/sign-in/\\\\[\\\\[...sign-in\\\\]\\\\]/page.tsx 2>/dev/null)",
+      "Bash(git add .planning/phases/01-free-tier-mvp/01-UAT.md && git commit -m \"$\\(cat <<'EOF'\ntest\\(01\\): complete UAT - 11 passed, 2 issues\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git add src/app/api/deploy-status/[deploymentId]/route.ts .planning/phases/01-free-tier-mvp/01-UAT.md && git commit -m \"$\\(cat <<'EOF'\nfix\\(deploy-status\\): use stable Vercel alias instead of per-deployment URL\n\nRe-publishing was showing a new URL each time because data.url on a\nVercel deployment object is the unique per-deployment subdomain \\(changes\nevery publish\\). Now reads data.alias[] and picks the stable production\nalias \\(invitation-{id}.vercel.app\\) so liveUrl stays constant across\nre-publishes.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git add .planning/milestones/v1.0-ROADMAP.md .planning/MILESTONES.md .planning/PROJECT.md .planning/ROADMAP.md .planning/STATE.md .planning/RETROSPECTIVE.md && git commit -m \"$\\(cat <<'EOF'\nchore: archive v1.0 Free Tier MVP milestone\n\n7 plans shipped across 1 phase. UAT: 11/13 passed, 1 bug fixed\n\\(stable re-publish URL\\), 1 minor gap deferred \\(i18n toggle\\).\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git tag -a v1.0 -m \"$\\(cat <<'EOF'\nv1.0 Free Tier MVP\n\nDelivered: Complete Free tier vertical slice — sign up, pick a template, customize in-browser, publish to a live Vercel URL in under 90 seconds with zero technical steps.\n\nKey accomplishments:\n- Next.js 16 + Clerk v7 auth scaffold with CI pipeline\n- 6 production-ready invitation templates \\(4 wedding, 2 baptism\\)\n- Field-based in-browser editor with live preview, photo upload, autosave\n- Vercel deploy pipeline with SSE polling and stable URL on re-publish\n\nSee .planning/MILESTONES.md for full details.\nEOF\n\\)\")",
+      "Skill(gsd:discuss-phase)",
+      "Bash(git add .planning/phases/02-billing-infrastructure/02-CONTEXT.md && git commit -m \"docs\\(02\\): capture phase 2 billing context\")",
+      "Bash(git add .planning/STATE.md && git commit -m \"docs\\(state\\): record phase 2 context session\" 2>/dev/null || echo \"nothing to commit\")",
+      "Bash(git add .claude/ && git commit -m \"docs\\(session\\): wrap up session 7 — phase 2 context complete\")"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'CONTEXT_DIR=\"/c/Work/WeddingGame/.claude\"; OUTPUT=\"\"; for f in context-snapshot.md nextsession.md decisions.md sessionlog.md; do FILE=\"$CONTEXT_DIR/$f\"; if [ -f \"$FILE\" ]; then OUTPUT=\"$OUTPUT\\n--- $f ---\\n$(cat \"$FILE\")\\n\"; fi; done; if [ -n \"$OUTPUT\" ]; then echo \"[SESSION CONTEXT RESTORED]\"; echo -e \"$OUTPUT\"; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}
