@@ -80,7 +80,7 @@ completed: 2026-03-10
 - **Duration:** ~35 min
 - **Started:** 2026-03-10T15:04:11Z
 - **Completed:** 2026-03-10T15:14:00Z
-- **Tasks:** 4 (+ checkpoint pending human verification)
+- **Tasks:** 5 (4 auto + 1 checkpoint:human-verify — APPROVED)
 - **Files created:** 14
 - **Files modified:** 2
 
@@ -99,6 +99,7 @@ Each task was committed atomically:
 2. **Task 2: Pricing page + UpgradeModal + TopNav tier badge** — `e816bed` (feat)
 3. **Task 3: /billing/success + /billing/cancel + DashboardUsageBar + dashboard** — `2a78650` (feat)
 4. **Task 4: EditorLockedFeatures** — `b5ec088` (feat)
+5. **Post-checkpoint bug fixes** — `46615ec` (fix) + `7f39852` (fix)
 
 ## Files Created/Modified
 
@@ -127,9 +128,28 @@ Each task was committed atomically:
 
 ## Deviations from Plan
 
-None - plan executed exactly as written. All files specified in the plan were created with behavior matching the spec.
+### Auto-fixed Issues (found during human verification)
 
-Pre-existing TypeScript errors in test files (mock type assertion conflicts) were present before 02-02 and are out of scope — all 69 vitest tests pass at runtime.
+**1. [Rule 1 - Bug] Reset loading state on checkout error; upsert user before checkout**
+- **Found during:** Task 5 (checkpoint:human-verify — Stripe Checkout redirect scenario)
+- **Issue:** Loading spinner stayed active if checkout API returned an error; also, checkout could fail if user row did not yet exist in DB (first-time buyer)
+- **Fix:** Added `finally { setLoading(false) }` in the checkout handler; added upsert of user row before creating Stripe session
+- **Files modified:** `src/components/upgrade/UpgradeModal.tsx`, `src/app/api/billing/checkout/route.ts`
+- **Verification:** Checkout redirect worked end-to-end; error state recovers correctly
+- **Committed in:** `46615ec`
+
+**2. [Rule 1 - Bug] Await params in admin tier route — Next.js 15+ requirement**
+- **Found during:** Task 5 (checkpoint:human-verify — admin endpoint scenario)
+- **Issue:** Next.js 15+ requires `params` to be awaited in dynamic route handlers; accessing `params.id` directly caused a runtime error
+- **Fix:** Changed `{ params }: { params: { id: string } }` to `{ params }: { params: Promise<{ id: string }> }` and added `const { id } = await params`
+- **Files modified:** `src/app/api/admin/users/[id]/tier/route.ts`
+- **Verification:** Admin endpoint returned 200 and correctly updated user tier in DB
+- **Committed in:** `7f39852`
+
+---
+
+**Total deviations:** 2 auto-fixed (2 bugs found during human verification checkpoint)
+**Impact on plan:** Both fixes were required for end-to-end correctness. No scope creep.
 
 ## Test Results
 
@@ -151,7 +171,17 @@ Confirmed zero call-site changes required:
 
 ## Checkpoint Status
 
-Task 5 is a `checkpoint:human-verify` — awaiting manual verification of all 8 scenarios listed in the plan. Human must approve before plan is marked complete.
+Task 5 (`checkpoint:human-verify`) — **APPROVED by human on 2026-03-10.**
+
+All 8 verification scenarios passed:
+1. Pricing page renders correctly with hero, 3-tier cards (0/99/149 RON), comparison table, FAQ, and Stripe Test Mode badge
+2. TopNav badge reflects user tier (Free gray pill) with correct nav order
+3. Upgrade modal opens from dashboard Upgrade link; Gold highlighted with ring-[#DB2777]
+4. Dashboard usage bar shows correct draft/live counts for FREE user
+5. Stripe Checkout redirect works end-to-end (required post-checkpoint bug fix: upsert user + reset loading state)
+6. /billing/success polling detects tier update after webhook, shows welcome card, auto-redirects after 5s
+7. Admin endpoint returns 200 and updates tier (required post-checkpoint bug fix: await params)
+8. EditorLockedFeatures: PDF locked for FREE, WhatsApp locked for FREE+GOLD, both open upgrade modal when clicked
 
 ## Next Phase Readiness
 
@@ -172,14 +202,17 @@ All 9 checked files found:
 - FOUND: src/components/editor/EditorLockedFeatures.tsx
 - FOUND: .planning/phases/02-billing-infrastructure/02-02-SUMMARY.md
 
-All 5 task commits verified in git log:
+All 7 commits verified in git log:
 - 18b9d01 (test 02-02): failing tests
 - b757b70 (feat 02-02): StripeFeatureGate + API routes
 - e816bed (feat 02-02): pricing page + UpgradeModal + TopNav
 - 2a78650 (feat 02-02): billing pages + DashboardUsageBar
 - b5ec088 (feat 02-02): EditorLockedFeatures
+- 46615ec (fix 02-02): reset loading state on checkout error; upsert user before checkout
+- 7f39852 (fix 02-02): await params in admin tier route
 
 Full vitest suite: 69/69 passed, 0 failed.
+Human checkpoint: APPROVED — all 8 scenarios passed.
 
 ---
 *Phase: 02-billing-infrastructure*

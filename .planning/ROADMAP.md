@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Free Tier MVP** — Phase 1 (shipped 2026-03-10)
-- 🚧 **v1.1 Billing + Gold** — Phases 2-3 (planned)
+- 🚧 **v1.1 Billing + Gold** — Phase 2 complete; Phase 3 next
 - 📋 **v1.2 Platinum** — Phase 4 (planned)
 - 📋 **v2.0 Admin + Hardening** — Phase 5 (planned)
 
@@ -54,7 +54,7 @@ access server-side — so Gold and Platinum features can be built against a work
 
 Plans:
 - [x] 02-01: Stripe integration — products/prices, Stripe Checkout, webhook handler (idempotent) — DONE 2026-03-10
-- [ ] 02-02: FeatureGate service — server-side tier check on every gated API route; invitation count limits (1/3/unlimited)
+- [x] 02-02: FeatureGate service — StripeFeatureGate, pricing page, upgrade modal, TopNav tier badge, billing success/cancel pages, editor locked features — DONE 2026-03-10
 
 ### Phase 3: Gold Tier
 **Goal**: Gold subscribers can download a print-ready PDF of their invitation in A4 or A5, and
@@ -123,7 +123,7 @@ Plans:
 | In-browser customization (text, images) | Phase 1 | ✅ v1.0 |
 | Free tier end-to-end (select + edit + deploy + URL) | Phase 1 | ✅ v1.0 |
 | Vercel project created/deployed per invitation | Phase 1 | ✅ v1.0 |
-| Platform offers 3 tiers: Free, Gold, Platinum | Phase 2 | Pending |
+| Platform offers 3 tiers: Free, Gold, Platinum | Phase 2 | ✅ v1.1 |
 | Gold tier: PDF print export in standard sizes | Phase 3 | Pending |
 | Platinum tier: WhatsApp bulk sending via WABA | Phase 4 | Pending |
 | Platinum tier: guest list via CSV/Excel or manual | Phase 4 | Pending |
