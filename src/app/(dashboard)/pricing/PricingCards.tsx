@@ -92,6 +92,9 @@ export default function PricingCards({ tier, isDevMode: _isDevMode }: Props) {
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        console.error("[PricingCards] Checkout error:", data.error ?? res.status);
+        setLoadingTier(null);
       }
     } catch (err) {
       console.error("[PricingCards] Checkout error:", err);

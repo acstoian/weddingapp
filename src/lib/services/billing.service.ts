@@ -38,6 +38,12 @@ export async function createCheckoutSession(
   targetTier: BillingTier,
   returnUrl: string
 ): Promise<{ url: string }> {
+  // Ensure the user row exists (covers users who bypassed the Clerk sync webhook)
+  await db
+    .insert(users)
+    .values({ id: userId, email: "", tier: "FREE" })
+    .onConflictDoNothing();
+
   const [user] = await db
     .select()
     .from(users)
