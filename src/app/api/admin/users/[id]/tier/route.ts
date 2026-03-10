@@ -24,7 +24,7 @@ const VALID_TIERS: Tier[] = ["FREE", "GOLD", "PLATINUM"];
  */
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Validate admin secret
   const adminSecret = request.headers.get("x-admin-secret");
@@ -48,7 +48,7 @@ export async function POST(
     );
   }
 
-  const userId = params.id;
+  const { id: userId } = await params;
 
   // Update only users.tier — do NOT touch invitation rows (BILLING-04)
   await db
