@@ -1,86 +1,67 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
+milestone: v1.1
+milestone_name: Billing + Gold
 status: planning
-stopped_at: Completed 01-free-tier-mvp plan 02 (schema + DeploymentService)
-last_updated: "2026-03-09T17:59:50.909Z"
-last_activity: 2026-03-09 — Roadmap created; research complete; WABA application not yet started
+stopped_at: v1.0 milestone archived — ready to start Phase 2
+last_updated: "2026-03-10T10:00:00.000Z"
+last_activity: 2026-03-10 — v1.0 MVP shipped; UAT complete; milestone archived
 progress:
   total_phases: 5
-  completed_phases: 0
-  total_plans: 7
-  completed_plans: 2
-  percent: 0
+  completed_phases: 1
+  total_plans: 15
+  completed_plans: 7
+  percent: 47
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-09)
+See: .planning/PROJECT.md (updated 2026-03-10 after v1.0 milestone)
 
 **Core value:** Every invitation goes from template to live, shareable link with zero technical effort — then reaches guests however they prefer.
-**Current focus:** Phase 1 — Free Tier MVP
+**Current focus:** Phase 2 — Billing Infrastructure
 
 ## Current Position
 
-Phase: 1 of 5 (Free Tier MVP)
-Plan: 0 of 7 in current phase
+Phase: 2 of 5 (Billing Infrastructure)
+Plan: 0 of 2 in current phase
 Status: Ready to plan
-Last activity: 2026-03-09 — Roadmap created; research complete; WABA application not yet started
+Last activity: 2026-03-10 — v1.0 MVP shipped and archived
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] ~20% (1/5 phases complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| - | - | - | - |
-
-**Recent Trend:**
-- Last 5 plans: none yet
-- Trend: -
-
-*Updated after each plan completion*
-| Phase 01-free-tier-mvp P01 | 45 | 3 tasks | 32 files |
-| Phase 01-free-tier-mvp P02 | 5 | 2 tasks | 8 files |
+- Total plans completed: 7 (Phase 1)
+- Timeline: 2 days for 7 plans
+- Avg: ~7 hours/plan
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
-
-- Research: Form-based field editor (NOT drag-and-drop canvas) locked for v1 — 95% of needs at 10% cost
-- Research: Git automation via Octokit (not git CLI) — serverless stateless constraint
-- Research: Branch naming is invitation/{invitationId}, not per-user — avoids multi-invite collisions
-- Research: PDF cannot run on Vercel serverless — Railway/Render/Fly.io or Browserless.io required
-- Research: DeploymentService abstraction layer required from Phase 1 — Vercel quota risk
-- [Phase 01-free-tier-mvp]: Scaffold(01-01): Clerk v7 UserButton drops afterSignOutUrl prop; StubFeatureGate uses clean stub pattern (no dynamic db import); root page.tsx redirect added; package name is save-the-date (no capitals)
-- [Phase 01-free-tier-mvp]: Schema(01-02): InvitationFields defined as Record<string,unknown> placeholder; 01-03 replaces with Zod-inferred type
-- [Phase 01-free-tier-mvp]: Schema(01-02): DeploymentService factory pattern established — getDeploymentService() is sole import point; Phase 5 swaps implementation without touching call sites
+- React-based templates + Vercel per-invitation + field-based editor — all validated in v1.0 UAT
+- DeploymentService abstraction ready for Phase 5 swap
+- Branch naming: invitation/{invitationId} — confirmed correct
+- SSE polling for deploy status — confirmed working within 90s
+- data.alias[] for stable liveUrl — fixed in UAT; must use alias not data.url
 
 ### Pending Todos
 
-None yet.
+- Start WABA Meta Business Verification application (2–10 week lead time, needed before Phase 4)
+- Spike PDF compute provider before Phase 3 planning
 
 ### Blockers/Concerns
 
-- [Phase 1] Vercel Pro plan project limits unconfirmed — must verify at vercel.com/pricing before Phase 1 plans are finalized. Architectural fork risk if limits are too low.
-- [Phase 4] WABA approval is a hard external gate for Platinum. Start Meta Business Verification immediately (2–10 week lead time). Do not wait for Phase 4 engineering to begin.
-- [Phase 3] PDF compute provider not yet selected — spike required before Phase 3 planning.
+- WABA approval is a hard external gate for Phase 4 Platinum — start Meta application during Phase 2
+- PDF compute provider not yet selected — spike required before Phase 3 planning
+- Vercel project limits unconfirmed — verify Pro plan limits before high-volume usage
 
 ## Session Continuity
 
-Last session: 2026-03-09T17:59:50.907Z
-Stopped at: Completed 01-free-tier-mvp plan 02 (schema + DeploymentService)
-Resume file: None
+Last session: 2026-03-10
+Stopped at: v1.0 milestone archived
+Resume file: None — clean start for Phase 2
