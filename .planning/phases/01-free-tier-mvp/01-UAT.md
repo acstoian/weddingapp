@@ -85,5 +85,9 @@ skipped: 0
   reason: "User reported: it created a new url in the same branch"
   severity: major
   test: 12
-  artifacts: []
-  missing: []
+  root_cause: "deploy-status route reads data.url (per-deployment unique subdomain) instead of data.alias (stable production alias). Every re-publish creates a new deployment with a new unique URL even though the Vercel project and its stable alias are correctly reused."
+  artifacts:
+    - path: "src/app/api/deploy-status/[deploymentId]/route.ts"
+      issue: "Line 105: reads data.url instead of data.alias[]; fixed to prefer stable alias"
+  missing:
+    - "Read data.alias array and pick the non-git-specific alias as the stable liveUrl"

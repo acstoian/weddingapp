@@ -101,8 +101,15 @@ export async function GET(_request: Request, context: RouteContext) {
                   },
                 }
               );
-              const data = (await res.json()) as { url?: string };
-              liveUrl = data.url ? `https://${data.url}` : "";
+              const data = (await res.json()) as { url?: string; alias?: string[] };
+              // Prefer the stable production alias (e.g. invitation-{id}.vercel.app)
+              // over data.url which is the per-deployment unique subdomain that changes every publish.
+              const stableAlias = data.alias?.find((a) => !a.includes("-git-"));
+              liveUrl = stableAlias
+                ? `https://${stableAlias}`
+                : data.url
+                  ? `https://${data.url}`
+                  : "";
             } catch {
               // keep liveUrl empty
             }
