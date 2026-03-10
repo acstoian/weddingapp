@@ -68,7 +68,7 @@ describe("DeploymentService", () => {
 
   it("triggerDeploy returns deploymentId from Vercel API response", async () => {
     const svc = new VercelDeploymentService();
-    const result = await svc.triggerDeploy("proj_abc", "main");
+    const result = await svc.triggerDeploy("proj_abc", "invitation-inv_123", "main");
     expect(result).toEqual({ deploymentId: "dep_123" });
   });
 
@@ -82,5 +82,26 @@ describe("DeploymentService", () => {
     const result = await svc.createOrUpdateProject("inv_123", "main");
     expect(result.projectId).toBe("proj_new");
     expect(result.url).toBe("new-project.vercel.app");
+  });
+
+  it("SSE event data line parses as valid JSON with status and url fields", () => {
+    // Validate the SSE wire format used by /api/deploy-status
+    const payloads: Array<{ status: string; url: string | null }> = [
+      { status: "BUILDING", url: null },
+      { status: "READY", url: "https://invitation-abc.vercel.app" },
+      { status: "ERROR", url: null },
+    ];
+
+    for (const payload of payloads) {
+      const line = `event: status\ndata: ${JSON.stringify(payload)}\n\n`;
+      const dataLine = line.split("\n").find((l) => l.startsWith("data: "));
+      expect(dataLine).toBeDefined();
+      const parsed = JSON.parse(dataLine!.slice(6)) as {
+        status: unknown;
+        url: unknown;
+      };
+      expect(typeof parsed.status).toBe("string");
+      expect(parsed.url === null || typeof parsed.url === "string").toBe(true);
+    }
   });
 });

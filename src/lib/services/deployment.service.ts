@@ -20,9 +20,12 @@ export interface DeploymentService {
 
   /**
    * Trigger a new deployment on the given project from a specific branch.
+   * projectName is the Vercel project name (e.g. "invitation-{id}"), required
+   * by the Vercel v13 deployments API as the `name` field.
    */
   triggerDeploy(
     projectId: string,
+    projectName: string,
     branch: string
   ): Promise<{ deploymentId: string }>;
 

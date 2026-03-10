@@ -74,6 +74,10 @@ This applies to:
 
 Do NOT design UI from scratch without invoking this skill first. It is installed from https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.
 
+## Environment
+
+- **Python is available** — use `py` (the Windows Python Launcher) as the Python command. `python` and `python3` are NOT on PATH. Always use `py` (e.g. `py script.py`, `py -c "..."`).
+
 ## Core Principles
 
 - **Simplicity First**: Prefer the simplest solution that correctly solves the problem

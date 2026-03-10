@@ -56,9 +56,10 @@ export default function MinimalBaptism2(props: InvitationFields) {
     dresscodeRsvpNote,
   } = props;
 
-  const eventDate = new Date(eventDatetime);
-  const formattedDate = format(eventDate, "d MMMM yyyy", { locale: ro });
-  const formattedTime = format(eventDate, "HH:mm");
+  const eventDate = eventDatetime ? new Date(eventDatetime) : null;
+  const isValidDate = eventDate && !isNaN(eventDate.getTime());
+  const formattedDate = isValidDate ? format(eventDate!, "d MMMM yyyy", { locale: ro }) : "";
+  const formattedTime = isValidDate ? format(eventDate!, "HH:mm") : "";
 
   return (
     <div

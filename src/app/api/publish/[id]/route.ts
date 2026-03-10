@@ -58,12 +58,18 @@ export async function POST(_request: Request, context: RouteContext) {
     const { projectId } = await deploymentSvc.createOrUpdateProject(id, branch);
     vercelProjectId = projectId;
 
-    // Inject required env vars into the new Vercel project so middleware and DB work
-    // when guests open the live invitation URL.
+    // Save projectId immediately so retries reuse the same project
+    await db
+      .update(invitations)
+      .set({ vercelProjectId, updatedAt: new Date() })
+      .where(eq(invitations.id, id));
+
+    // Inject required env vars into the new Vercel project
     await setVercelProjectEnvVars(vercelProjectId, id);
   }
 
-  const { deploymentId } = await deploymentSvc.triggerDeploy(vercelProjectId, branch);
+  const projectName = `invitation-${id}`;
+  const { deploymentId } = await deploymentSvc.triggerDeploy(vercelProjectId, projectName, branch);
 
   await db
     .update(invitations)

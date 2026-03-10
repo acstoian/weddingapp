@@ -94,14 +94,18 @@ export class VercelDeploymentService implements DeploymentService {
    * Trigger a new deployment on Vercel from a GitHub branch.
    */
   async triggerDeploy(
-    projectId: string,
+    _projectId: string,
+    projectName: string,
     branch: string
   ): Promise<{ deploymentId: string }> {
-    const res = await fetch(`${VERCEL_API}/v13/deployments`, {
+    const url = new URL(`${VERCEL_API}/v13/deployments`);
+    if (this.teamId) url.searchParams.set("teamId", this.teamId);
+
+    const res = await fetch(url.toString(), {
       method: "POST",
       headers: this.authHeaders(),
       body: JSON.stringify({
-        name: projectId,
+        name: projectName,
         gitSource: {
           type: "github",
           org: "acstoian",
@@ -113,7 +117,8 @@ export class VercelDeploymentService implements DeploymentService {
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to trigger deploy: ${res.status}`);
+      const body = await res.text().catch(() => "(no body)");
+      throw new Error(`Failed to trigger deploy: ${res.status} ${body}`);
     }
 
     const data = (await res.json()) as { id: string };
