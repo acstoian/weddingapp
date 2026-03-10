@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  pdf-renderer:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - PDF_SERVICE_SECRET=dev-secret
+    restart: unless-stopped
