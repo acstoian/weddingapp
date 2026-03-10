@@ -110,7 +110,7 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 1. Free Tier MVP | v1.0 | 7/7 | Complete | 2026-03-10 |
 | 2. Billing Infrastructure | 2/2 | Complete   | 2026-03-10 | - |
-| 3. Gold Tier | v1.1 | 0/2 | Not started | - |
+| 3. Gold Tier | 1/2 | In Progress|  | - |
 | 4. Platinum Tier | v1.2 | 0/2 | Not started | - |
 | 5. Admin Dashboard + Hardening | v2.0 | 0/2 | Not started | - |
 

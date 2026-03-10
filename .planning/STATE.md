@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Billing + Gold
 status: planning
-stopped_at: Phase 3 context gathered
-last_updated: "2026-03-10T19:06:47.751Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-10T20:23:26.973Z"
 last_activity: 2026-03-10 — 02-02 all 5 tasks done, checkpoint APPROVED, 2 post-verification bug fixes committed
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 4
+  completed_plans: 3
   percent: 55
 ---
 
@@ -56,6 +56,8 @@ Progress: [█████░░░░░] ~55% (Phase 1 done, Phase 2 done — 
 - Locked feature UI: wrapper div is clickable, inner button has disabled attr (pointer-events workaround)
 - DashboardUsageBar returns null for non-FREE users — avoids clutter for paid users
 - Billing success polls tier !== FREE (not specific tier) — works for both GOLD and PLATINUM upgrades
+- [Phase 03-gold-tier]: Buffer->Uint8Array required for NextResponse BodyInit in Next.js PDF streaming
+- [Phase 03-gold-tier]: PDF Railway service uses eager browser launch (not lazy) with MAX_RENDERS=2 concurrency gate
 
 ### Pending Todos
 
@@ -70,6 +72,6 @@ Progress: [█████░░░░░] ~55% (Phase 1 done, Phase 2 done — 
 
 ## Session Continuity
 
-Last session: 2026-03-10T19:06:47.748Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-gold-tier/03-CONTEXT.md
+Last session: 2026-03-10T20:23:26.971Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None
