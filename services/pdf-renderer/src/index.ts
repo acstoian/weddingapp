@@ -14,7 +14,7 @@ interface RenderRequest {
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const PORT = 3001;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const MAX_RENDERS = 2;
 const MM_TO_PX = 96 / 25.4;
 const CSS_SCALE = 3;
