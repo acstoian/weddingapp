@@ -129,13 +129,17 @@ app.post("/render", requireSecret, async (req: Request, res: Response) => {
       `,
     });
 
-    // Generate PDF at physical print dimensions
+    // Generate PDF at physical print dimensions.
+    // pageRanges: "1" is the nuclear option — if any pixel overflows the clipped
+    // body, Puppeteer would otherwise emit a blank second page. This guarantees
+    // single-page output regardless of layout edge cases.
     const buffer = await page.pdf({
       width: widthMm + "mm",
       height: heightMm + "mm",
       scale: 1,
       printBackground: true,
       margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      pageRanges: "1",
     });
 
     const durationMs = Date.now() - start;
