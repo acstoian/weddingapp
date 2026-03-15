@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Free Tier MVP** — Phase 1 (shipped 2026-03-10)
-- 🚧 **v1.1 Billing + Gold** — Phase 2 complete; Phase 3 next
+- ✅ **v1.1 Billing + Gold** — Phases 2 + 3 complete (shipped 2026-03-15)
 - 📋 **v1.2 Platinum** — Phase 4 (planned)
 - 📋 **v2.0 Admin + Hardening** — Phase 5 (planned)
 
@@ -25,10 +25,10 @@ Full archive: `.planning/milestones/v1.0-ROADMAP.md`
 
 </details>
 
-### 🚧 v1.1 Billing + Gold (Phases 2-3)
+### ✅ v1.1 Billing + Gold (Phases 2-3) — SHIPPED 2026-03-15
 
 - [x] **Phase 2: Billing Infrastructure** - Stripe subscriptions + FeatureGate service + tier-gated API routes (completed 2026-03-10)
-- [ ] **Phase 3: Gold Tier** - PDF print export (Card 100×150mm / Pliant 148×200mm) via dedicated Puppeteer compute on Railway + QR code embedded in PDF
+- [x] **Phase 3: Gold Tier** - PDF print export (Card 100×150mm / Pliant 148×200mm) via dedicated Puppeteer compute on Railway + QR code embedded in PDF (completed 2026-03-15)
 
 ### 📋 v1.2 Platinum (Phase 4)
 
@@ -68,8 +68,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — PDF compute service: Railway microservice (/services/pdf-renderer) + FeatureGate.canExportPdf() + pdf.service.ts + /api/export/pdf/[id] route + Wave 0 tests
-- [ ] 03-02-PLAN.md — Frontend integration: PdfExportButton size selector + isLive wiring + QR overlay in all 6 templates + human checkpoint
+- [x] 03-01-PLAN.md — PDF compute service: Railway microservice (/services/pdf-renderer) + FeatureGate.canExportPdf() + pdf.service.ts + /api/export/pdf/[id] route + Wave 0 tests — DONE 2026-03-10
+- [x] 03-02-PLAN.md — Frontend integration: PdfExportButton size selector + isLive wiring + QR overlay in all 6 templates + human checkpoint — DONE 2026-03-15
 
 ### Phase 4: Platinum Tier
 **Goal**: Platinum subscribers can manage a guest list and send their invitation URL to every guest
@@ -110,7 +110,7 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 1. Free Tier MVP | v1.0 | 7/7 | Complete | 2026-03-10 |
 | 2. Billing Infrastructure | 2/2 | Complete   | 2026-03-10 | - |
-| 3. Gold Tier | 1/2 | In Progress|  | - |
+| 3. Gold Tier | v1.1 | 2/2 | Complete | 2026-03-15 |
 | 4. Platinum Tier | v1.2 | 0/2 | Not started | - |
 | 5. Admin Dashboard + Hardening | v2.0 | 0/2 | Not started | - |
 
@@ -123,7 +123,7 @@ Plans:
 | Free tier end-to-end (select + edit + deploy + URL) | Phase 1 | ✅ v1.0 |
 | Vercel project created/deployed per invitation | Phase 1 | ✅ v1.0 |
 | Platform offers 3 tiers: Free, Gold, Platinum | Phase 2 | ✅ v1.1 |
-| Gold tier: PDF print export in standard sizes | Phase 3 | Pending |
+| Gold tier: PDF print export in standard sizes | Phase 3 | ✅ v1.1 |
 | Platinum tier: WhatsApp bulk sending via WABA | Phase 4 | Pending |
 | Platinum tier: guest list via CSV/Excel or manual | Phase 4 | Pending |
 | Admin dashboard for managing invitations | Phase 5 | Pending |
